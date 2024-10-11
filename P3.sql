@@ -146,6 +146,4 @@ CREATE TABLE Business_Review
 
 -- Query 9: Find the most common type of business each user reviews (Subquery)
 
--- Query 10: Find the total number of users with a 'Gold' status type (Aggregate)
-
--- Query 11: Find the breakdown for status types for all users (Aggregate)
+-- Query 10: Find the breakdown for status types for all users (Aggregate)
