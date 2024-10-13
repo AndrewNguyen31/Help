@@ -19,7 +19,6 @@ CREATE TABLE Users
     userType NVARCHAR CHECK (userType IN ('Owner', 'Reviewer')),
     businessCount INT DEFAULT 0,
     reviewCount INT DEFAULT 0,
-    statusID INT NOT NULL,
     CONSTRAINT User_FK FOREIGN KEY (statusID) REFERENCES Status(statusID)
 )
 
@@ -59,7 +58,6 @@ CREATE TABLE Review
 (
     reviewID INT PRIMARY KEY,
     username NVARCHAR(50) NOT NULL,
-    businessID INT NOT NULL,
     rating INT CHECK (rating >= 1 AND rating <= 5),
     [description] NVARCHAR(255),
     CONSTRAINT Review_User_FK FOREIGN KEY (username) REFERENCES Users(username),
