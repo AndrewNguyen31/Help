@@ -18,8 +18,7 @@ CREATE TABLE Users
     dateJoined DATE DEFAULT GETDATE(),
     userType NVARCHAR CHECK (userType IN ('Owner', 'Reviewer')),
     businessCount INT DEFAULT 0,
-    reviewCount INT DEFAULT 0,
-    CONSTRAINT User_FK FOREIGN KEY (statusID) REFERENCES Status(statusID)
+    reviewCount INT DEFAULT 0
 )
 
 CREATE TABLE Business
@@ -60,8 +59,7 @@ CREATE TABLE Review
     username NVARCHAR(50) NOT NULL,
     rating INT CHECK (rating >= 1 AND rating <= 5),
     [description] NVARCHAR(255),
-    CONSTRAINT Review_User_FK FOREIGN KEY (username) REFERENCES Users(username),
-    CONSTRAINT Review_Business FOREIGN KEY (businessID) REFERENCES Business(businessID)
+    CONSTRAINT Review_User_FK FOREIGN KEY (username) REFERENCES Users(username)
 )
 
 CREATE TABLE Own
