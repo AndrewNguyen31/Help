@@ -124,22 +124,72 @@ CREATE TABLE Business_Review
 
 
 -- 10 SQL Queries
--- Query 1: Find small businesses (less than 100 reviews) (Aggregate)
+-- Query 1: Find small businesses (less than 100 reviews)
 
 -- Query 2: Find average ratings for the businesses (Aggregate)
+SELECT AVG(overallRating) AS AvgRating
+FROM Business
 
--- Query 3: Find total number of comments for each review (Aggregate)
+-- Query 3: Find total number of comments for each review
 
--- Query 4: Find total number of reviews for each status (Join)
+-- Query 4: Find total number of reviews for each status (Aggregate + Join)
+SELECT statusName, COUNT(r.reviewID) as ReviewCount
+FROM [Status] s JOIN Holds h ON s.statusID = h.statusID JOIN Users u ON u.username = h.username JOIN Review r ON u.username = r.username
+GROUP BY s.statusName
 
--- Query 5: Find the most common business type (Subquery)
+-- Query 5: Find the most common business type (Aggregate)
+SELECT TOP 1
+    businessType, COUNT(*) AS typeCount
+FROM Business
+GROUP BY businessType
+ORDER BY typeCount DESC
 
--- Query 6: Find the average number of reviews a user posts (Aggregate)
+-- Query 6: Find the average number of reviews a user posts
 
--- Query 7: Find the number of businesses per state (Aggregate)
+-- Query 7: Find the number of businesses per status
 
--- Query 8: Find the most common reviewer status for each business (Join)
+-- Query 8: Find the most common reviewer status for each business
 
--- Query 9: Find the most common type of business each user reviews (Subquery)
+-- Query 9: Find the most common type of business each user reviews (Aggregate + Join + Subquery)
+WITH
+    UserBusinessTypes
+    AS
+    (
+        SELECT
+            u.username,
+            b.businessType,
+            COUNT(*) AS reviewCount
+        FROM
+            Users u
+            JOIN
+            Review r ON u.username = r.username
+            JOIN
+            Business_Review br ON r.reviewID = br.reviewID
+            JOIN
+            Business b ON br.businessID = b.businessID
+        GROUP BY 
+        u.username, b.businessType
+    ),
+    MaxReviewCounts
+    AS
+    (
+        SELECT
+            username,
+            MAX(reviewCount) AS maxCount
+        FROM
+            UserBusinessTypes
+        GROUP BY 
+        username
+    )
+SELECT
+    ubt.username,
+    ubt.businessType
+FROM
+    UserBusinessTypes ubt
+    JOIN
+    MaxReviewCounts mrc ON ubt.username = mrc.username AND ubt.reviewCount = mrc.maxCount
 
--- Query 10: Find the breakdown for status types for all users (Aggregate)
+-- Query 10: Find the breakdown for status types for all users (Aggregate + Join)
+SELECT s.statusName, COUNT(*) as UserCount
+FROM [Status] s LEFT JOIN Holds h ON s.statusID = h.statusID
+GROUP BY s.statusID
