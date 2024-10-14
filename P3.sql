@@ -125,12 +125,17 @@ CREATE TABLE Business_Review
 
 -- 10 SQL Queries
 -- Query 1: Find small businesses (less than 100 reviews)
+SELECT COUNT(businessID) AS smallBusinessCount
+FROM Business WHERE reviewCount < 5
 
 -- Query 2: Find average ratings for the businesses (Aggregate)
 SELECT AVG(overallRating) AS AvgRating
 FROM Business
 
 -- Query 3: Find total number of comments for each review
+SELECT reviewID, COUNT(commentID) AS totalComments
+FROM Comment
+GROUP BY reviewID
 
 -- Query 4: Find total number of reviews for each status (Aggregate + Join)
 SELECT statusName, COUNT(r.reviewID) as ReviewCount
@@ -151,6 +156,15 @@ SELECT username, AVG(review_count) OVER() AS average_review FROM (SELECT usernam
 SELECT [state], COUNT(*) AS NumberOfBusinesses FROM Business GROUP BY [state];
 
 -- Query 8: Find the most common reviewer status for each business
+SELECT B.businessID, B.[name], S.statusName, COUNT(*) AS totalReviewers
+FROM Business B
+JOIN Business_Review BR ON B.businessID = BR.businessID
+JOIN Review R ON BR.reviewID = R.reviewID
+JOIN Users U ON R.username = U.username
+JOIN Holds H ON U.username = H.username
+JOIN Status S ON H.statusID = S.statusID
+GROUP BY B.businessID, B.[name], S.statusName
+ORDER BY totalReviewers DESC
 
 -- Query 9: Find the most common type of business each user reviews (Aggregate + Join + Subquery)
 WITH
