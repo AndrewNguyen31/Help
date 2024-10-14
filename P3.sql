@@ -145,8 +145,10 @@ GROUP BY businessType
 ORDER BY typeCount DESC
 
 -- Query 6: Find the average number of reviews a user posts
-
+SELECT username, AVG(review_count) OVER() AS average_review FROM (SELECT username, COUNT(*) AS review_count FROM Review GROUP BY username) AS user_review_counts;
+    
 -- Query 7: Find the number of businesses per status
+SELECT [state], COUNT(*) AS NumberOfBusinesses FROM Business GROUP BY [state];
 
 -- Query 8: Find the most common reviewer status for each business
 
