@@ -172,9 +172,9 @@ INSERT INTO Status VALUES
 
 
 -- 10 SQL Queries
--- Query 1: Find small businesses (less than 100 reviews)
-SELECT COUNT(businessID) AS smallBusinessCount
-FROM Business WHERE reviewCount < 5
+-- Query 1: Find businesses with 0 reviews
+SELECT COUNT(businessID) AS businessWithNoReviews
+FROM Business WHERE reviewCount = 0
 
 -- Query 2: Find average ratings for the businesses (Aggregate)
 SELECT AVG(overallRating) AS AvgRating
