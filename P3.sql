@@ -5,7 +5,14 @@ CREATE DATABASE Hyelp
 CREATE TABLE Status
 (
     statusID INT PRIMARY KEY,
-    statusName NVARCHAR(30) CHECK (statusName IN ('Bronze', 'Silver', 'Gold')),
+    statusName NVARCHAR(30) CHECK (
+        statusName LIKE 'Iron %' OR
+        statusName LIKE 'Bronze %' OR
+        statusName LIKE 'Silver %' OR
+        statusName LIKE 'Gold %' OR
+        statusName LIKE 'Platinum %' OR
+        statusName LIKE 'Diamond %'
+    ),
     [description] NVARCHAR(255)
 )
 
@@ -121,6 +128,47 @@ CREATE TABLE Business_Review
 )
 
 -- Insert data into the tables
+-- Manual Insert 1: Status
+INSERT INTO Status VALUES 
+(1, 'Iron 1', 'Basic entry-level status for beginners. General access and iron badge for profile unlocked'),
+(2, 'Iron 2', 'Earn after posting first review'),
+(3, 'Iron 3', 'Earn if in Iron 2 and post a review with written description'),
+(4, 'Iron 4', 'Earn if in Iron 3 and post 5 reviews'),
+(5, 'Iron 5', 'Earn if in Iron 4 and finish customizing profile'),
+
+(6, 'Bronze 1', 'Earn if in Iron 5 and post 10 reviews. Bronze badge for profile unlocked'),
+(7, 'Bronze 2', 'Earn if in Bronze 1 and post review with pictures. '),
+(8, 'Bronze 3', 'Earn if in Bronze 2 and comment on another review '),
+(9, 'Bronze 4', 'Earn if in Bronze 3 and post 15 reviews'),
+(10, 'Bronze 5', 'Earn if in Bronze 4 and'),
+
+(11, 'Silver 1', 'Earn if in Bronze 5 and Silver badge for profile unlocked'),
+(12, 'Silver 2', 'Earn if in Silver 1 and '),
+(13, 'Silver 3', 'Earn if in Silver 2 and '),
+(14, 'Silver 4', 'Earn if in Silver 3 and '),
+(15, 'Silver 5', 'Earn if in Silver 4 and '),
+
+(16, 'Gold 1', 'Earn if in Silver 5 and Silver badge for profile unlocked'),
+(17, 'Gold 2', 'Earn if in Gold 1 and '),
+(18, 'Gold 3', 'Earn if in Gold 2 and '),
+(19, 'Gold 4', 'Earn if in Gold 3 and '),
+(20, 'Gold 5', 'Earn if in Gold 4 and '),
+
+(21, 'Platinum 1', 'Earn if in Gold 5 and Platinum badge for profile unlocked'),
+(22, 'Platinum 2', 'Earn if in Platinum 1 and'),
+(23, 'Platinum 3', 'Earn if in Platinum 2 and'),
+(24, 'Platinum 4', 'Earn if in Platinum 3 and'),
+(25, 'Platinum 5', 'Earn if in Platinum 4 and'),
+
+(26, 'Diamond 1', 'Earn if in Platinum 5 and Diamond badge for profile unlocked'),
+(27, 'Diamond 2', 'Earn if in Diamond 1 and'),
+(28, 'Diamond 3', 'Earn if in Diamond 2 and'),
+(29, 'Diamond 4', 'Earn if in Diamond 3 and'),
+(30, 'Diamond 5', 'Earn if in Diamond 4 and')
+
+-- Manual Insert 2: Comment
+
+-- Manual Insert 2: Post_Comment
 
 
 -- 10 SQL Queries
