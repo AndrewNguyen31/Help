@@ -129,49 +129,49 @@ CREATE TABLE Business_Review
 
 -- Insert data into all the tables: importing csv data and manualy inserting
 -- Import CSV File 1: User
-BULK INSERT Users FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\user_table_fixed.csv' WITH (
+BULK INSERT Users FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\User.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 2: Business
-BULK INSERT Business FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\business_table.csv' WITH (
+BULK INSERT Business FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\Business.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 3: Review
-BULK INSERT Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\review_table.csv' WITH (
+BULK INSERT Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\Review.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 4: Business_Review
-BULK INSERT Business_Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\business_review_table.csv' WITH (
+BULK INSERT Business_Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\Business_Review.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 5: Post_Review
-BULK INSERT Post_Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\post_review_table.csv' WITH (
+BULK INSERT Post_Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\Post_Review.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 6: Own_Business
-BULK INSERT Own_Business FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\own_table.csv' WITH (
+BULK INSERT Own_Business FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\Own_Business.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 7: Hold_Status
-BULK INSERT Hold_Status FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\holds_table.csv' WITH (
+BULK INSERT Hold_Status FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\Hold_Status.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
