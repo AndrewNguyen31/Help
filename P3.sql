@@ -19,29 +19,29 @@ CREATE TABLE Status
 CREATE TABLE Users
 (
     username NVARCHAR(50) PRIMARY KEY,
-    firstName NVARCHAR(30) NOT NULL,
-    lastName NVARCHAR(30) NOT NULL,
+    firstName NVARCHAR(50),
+    lastName NVARCHAR(50),
     dateOfBirth DATE,
-    dateJoined DATE DEFAULT GETDATE(),
-    userType NVARCHAR CHECK (userType IN ('Owner', 'Reviewer')),
-    businessCount INT DEFAULT 0,
-    reviewCount INT DEFAULT 0
+    dateJoined DATE,
+    userType NVARCHAR(50) CHECK (userType IN ('Both', 'Owner', 'Reviewer')),
+    businessCount INT,
+    reviewCount INT
 )
 
 CREATE TABLE Business
 (
-    businessID INT PRIMARY KEY,
-    [name] NVARCHAR(255),
+    businessID NVARCHAR(50) PRIMARY KEY,
+    [name] NVARCHAR(100),
     overallRating FLOAT,
-    reviewCount INT NOT NULL,
-    street NVARCHAR(255),
+    reviewCount FLOAT,
+    street NVARCHAR(100),
     city NVARCHAR(100),
-    [state] NVARCHAR(100),
-    zipCode NVARCHAR(10),
-    businessType NVARCHAR(100) CHECK (businessType in ('Restaurant', 'Entertainment', 'Service')),
-    cuisineType NVARCHAR(100),
-    entertainmentType NVARCHAR(100),
-    serviceType NVARCHAR(100)
+    [state] NVARCHAR(50),
+    zipCode NVARCHAR(50),
+    businessType NVARCHAR(50) CHECK (businessType in ('Restaurant', 'Entertainment', 'Service')),
+    cuisineType NVARCHAR(50),
+    entertainmentType NVARCHAR(50),
+    serviceType NVARCHAR(50)
 )
 
 CREATE TABLE User_Email
@@ -64,15 +64,15 @@ CREATE TABLE Review
 (
     reviewID NVARCHAR(50) PRIMARY KEY,
     username NVARCHAR(50) NOT NULL,
-    rating INT CHECK (rating >= 1 AND rating <= 5),
-    [description] NVARCHAR(255),
+    rating FLOAT CHECK (rating >= 1 AND rating <= 5),
+    [description] NVARCHAR(4000),
     CONSTRAINT Review_User_FK FOREIGN KEY (username) REFERENCES Users(username)
 )
 
 CREATE TABLE Own_Business
 (
     username NVARCHAR(50),
-    businessID INT,
+    businessID NVARCHAR(50),
     CONSTRAINT Own_PK PRIMARY KEY (username, businessID),
     CONSTRAINT Own_User_FK FOREIGN KEY (username) REFERENCES Users(username),
     CONSTRAINT Own_Business_FK FOREIGN KEY (businessID) REFERENCES Business(businessID)
@@ -120,7 +120,7 @@ CREATE TABLE Post_Comment
 
 CREATE TABLE Business_Review
 (
-    businessID INT,
+    businessID NVARCHAR(50),
     reviewID NVARCHAR(50),
     PRIMARY KEY (businessID, reviewID),
     CONSTRAINT Business_FK FOREIGN KEY (businessID) REFERENCES Business(businessID),
@@ -129,49 +129,49 @@ CREATE TABLE Business_Review
 
 -- Insert data into all the tables: importing csv data and manualy inserting
 -- Import CSV File 1: User
-BULK INSERT Users FROM 'csv-files\user_table.csv' WITH (
+BULK INSERT Users FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\user_table_fixed.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 2: Business
-BULK INSERT Users FROM 'csv-files\business_table.csv' WITH (
+BULK INSERT Business FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\business_table.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 3: Review
-BULK INSERT Users FROM 'csv-files\review_table.csv' WITH (
+BULK INSERT Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\review_table.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 4: Business_Review
-BULK INSERT Users FROM 'csv-files\business_review_table.csv' WITH (
+BULK INSERT Business_Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\business_review_table.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 5: Post_Review
-BULK INSERT Users FROM 'csv-files\post_review_table.csv' WITH (
+BULK INSERT Post_Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\post_review_table.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 6: Own_Business
-BULK INSERT Users FROM 'csv-files\own_table.csv' WITH (
+BULK INSERT Own_Business FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\own_table.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 7: Hold_Status
-BULK INSERT Users FROM 'csv-files\holds_table.csv' WITH (
+BULK INSERT Hold_Status FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\holds_table.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
@@ -420,7 +420,7 @@ FROM Business B
     JOIN Status S ON H.statusID = S.statusID
 GROUP BY B.businessID, B.[name], S.statusName
 ORDER BY totalReviewers DESC
-
+;
 -- Query 9: Find the most common type of business each user reviews (Aggregate + Join + Subquery)
 WITH
     UserBusinessTypes
@@ -463,4 +463,4 @@ FROM
 -- Query 10: Find the breakdown for status types for all users (Aggregate + Join)
 SELECT s.statusName, COUNT(*) as UserCount
 FROM [Status] s LEFT JOIN Hold_Status h ON s.statusID = h.statusID
-GROUP BY s.statusID
+GROUP BY s.statusName, s.statusID
