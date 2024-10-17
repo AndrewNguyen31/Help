@@ -129,49 +129,51 @@ CREATE TABLE Business_Review
 
 -- Insert data into all the tables: importing csv data and manualy inserting
 -- Import CSV File 1: User
-BULK INSERT Users FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\User.csv' WITH (
+BULK INSERT Users FROM '/data/csv-files/Users.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 2: Business
-BULK INSERT Business FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\Business.csv' WITH (
+BULK INSERT Business FROM '/data/csv-files/Business.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
-    ROWTERMINATOR = '\n'
+    ROWTERMINATOR = '\n',
+    FORMAT = 'CSV'
 )
 
 -- Import CSV File 3: Review
-BULK INSERT Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\Review.csv' WITH (
+BULK INSERT Review FROM '/data/csv-files/Review.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
-    ROWTERMINATOR = '\n'
+    ROWTERMINATOR = '\n',
+    FORMAT = 'CSV'
 )
 
 -- Import CSV File 4: Business_Review
-BULK INSERT Business_Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\Business_Review.csv' WITH (
+BULK INSERT Business_Review FROM '/data/csv-files/Business_Review.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 5: Post_Review
-BULK INSERT Post_Review FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\Post_Review.csv' WITH (
+BULK INSERT Post_Review FROM '/data/csv-files/Post_Review.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 6: Own_Business
-BULK INSERT Own_Business FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\Own_Business.csv' WITH (
+BULK INSERT Own_Business FROM '/data/csv-files/Own_Business.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
 )
 
 -- Import CSV File 7: Hold_Status
-BULK INSERT Hold_Status FROM 'D:\Microsoft VS Code\Projects\CS 4750\Hyelp\csv-files\csv-files\Hold_Status.csv' WITH (
+BULK INSERT Hold_Status FROM '/data/csv-files/Hold_Status.csv' WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = ',',
     ROWTERMINATOR = '\n'
@@ -420,7 +422,7 @@ FROM Business B
     JOIN Status S ON H.statusID = S.statusID
 GROUP BY B.businessID, B.[name], S.statusName
 ORDER BY totalReviewers DESC
-;
+
 -- Query 9: Find the most common type of business each user reviews (Aggregate + Join + Subquery)
 WITH
     UserBusinessTypes
