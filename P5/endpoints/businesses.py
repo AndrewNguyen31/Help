@@ -77,7 +77,14 @@ def update_business(business_id):
     entertainment_type = data.get('entertainmentType')
     service_type = data.get('serviceType')
 
-    if not name or not overall_rating or not review_count or not street or not city or not state or not zip_code or not business_type:
+    if (name is None or 
+        overall_rating is None or 
+        review_count is None or 
+        street is None or 
+        city is None or 
+        state is None or 
+        zip_code is None or 
+        business_type is None):
         return jsonify({'error': 'Required fields are missing'}), 400
 
     conn = get_db_connection()
