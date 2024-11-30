@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from datetime import datetime
 from db_config import get_db_connection
 
 # Create a Blueprint for user-related endpoints
@@ -28,8 +29,12 @@ def add_user():
         username = data['username']
         firstName = data['firstName']
         lastName = data['lastName']
-        dateOfBirth = data['dateOfBirth']  # 'YYYY-MM-DD' format
-        dateJoined = data['dateJoined']  # 'YYYY-MM-DD' format
+        
+        dateOfBirth_str = data.get('dateOfBirth')
+        dateJoined_str = data.get('dateJoined')
+        dateOfBirth = datetime.strptime(dateOfBirth_str, "%a, %d %b %Y %H:%M:%S %Z").strftime("%Y-%m-%d")
+        dateJoined = datetime.strptime(dateJoined_str, "%a, %d %b %Y %H:%M:%S %Z").strftime("%Y-%m-%d")
+        
         userType = data['userType']  # Must be 'Both', 'Owner', or 'Reviewer'
         businessCount = data.get('businessCount', 0)  # Default to 0 if not provided
         reviewCount = data.get('reviewCount', 0)  # Default to 0 if not provided
@@ -53,15 +58,20 @@ def add_user():
         conn.close()
         
 # PUT (update) a user
-@users_bp.route('/users/<string:username>', methods=['PUT'])
+@users_bp.route('/users/<username>', methods=['PUT'])
 def update_user(username):
     try:
         # Extract data from the request body
         data = request.json
         firstName = data.get('firstName')
         lastName = data.get('lastName')
-        dateOfBirth = data.get('dateOfBirth')  # 'YYYY-MM-DD' format
-        dateJoined = data.get('dateJoined')  # 'YYYY-MM-DD' format
+        
+        dateOfBirth_str = data.get('dateOfBirth')
+        dateJoined_str = data.get('dateJoined')
+        dateOfBirth = datetime.strptime(dateOfBirth_str, "%a, %d %b %Y %H:%M:%S %Z").strftime("%Y-%m-%d")
+        dateJoined = datetime.strptime(dateJoined_str, "%a, %d %b %Y %H:%M:%S %Z").strftime("%Y-%m-%d")
+        
+        
         userType = data.get('userType')  # Must be 'Both', 'Owner', or 'Reviewer'
         businessCount = data.get('businessCount')
         reviewCount = data.get('reviewCount')
