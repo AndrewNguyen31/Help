@@ -10,9 +10,25 @@ def get_comments():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Comment')
-        rows = cursor.fetchall()
-        comments = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
+        
+        comment_id = request.args.get('commentID')
+        
+        if comment_id:
+            cursor.execute('SELECT * FROM Comment WHERE commentID = ?', (comment_id,))
+            row = cursor.fetchone()
+            if row:
+                comments = [{
+                    'commentID': row[0],
+                    'username': row[1],
+                    'reviewID': row[2],
+                    'description': row[3]
+                }]
+            else:
+                return jsonify({'error': 'Comment not found'}), 404
+        else:        
+            cursor.execute('SELECT * FROM Comment')
+            rows = cursor.fetchall()
+            comments = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
         return jsonify(comments)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

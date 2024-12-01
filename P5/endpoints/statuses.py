@@ -39,25 +39,26 @@ def get_status():
 # POST: add a new status
 @status_bp.route('/statuses', methods=['POST'])
 def add_status():
-    data = request.json
-    status_name = data.get('statusName')
-    description = data.get('description')
-    
-    if not status_name or not description:
-        return jsonify({'error': 'statusName and description are required'}), 400
-    
-    conn = get_db_connection()
-    cursor = conn.cursor()
     try:
-        cursor.execute('INSERT INTO Status (statusName, description) VALUES (?, ?)', (status_name, description))
+        data = request.json
+        status_id = data.get('statusID')
+        status_name = data.get('statusName')
+        description = data.get('description')
+        
+        if not status_name or not description:
+            return jsonify({'error': 'statusName and description are required'}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute('INSERT INTO Status (statusID, statusName, description) VALUES (?, ?, ?)', 
+                       (status_id, status_name, description))
         conn.commit()
+        return jsonify({'message': 'Status added successfully'}), 201
     except Exception as e:
-        conn.rollback()
         return jsonify({'error': str(e)}), 500
     finally:
         conn.close()
-
-    return jsonify({'message': 'Status added successfully'}), 201
 
 # PUT: update an existing status
 @status_bp.route('/statuses/<status_id>', methods=['PUT'])
