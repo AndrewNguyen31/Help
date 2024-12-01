@@ -10,9 +10,25 @@ def get_reviews():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Review')
-        rows = cursor.fetchall()
-        reviews = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
+        
+        review_id = request.args.get('reviewID')
+        
+        if review_id:
+            cursor.execute('SELECT * FROM Review WHERE reviewID = ?', (review_id,))
+            row = cursor.fetchone()
+            if row:
+                reviews = [{
+                    'reviewID': row[0],
+                    'username': row[1],
+                    'rating': row[2],
+                    'description': row[3]
+                }]
+            else:
+                return jsonify({'error': 'Review not found'}), 404
+        else:
+            cursor.execute('SELECT * FROM Review')
+            rows = cursor.fetchall()
+            reviews = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
         return jsonify(reviews)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

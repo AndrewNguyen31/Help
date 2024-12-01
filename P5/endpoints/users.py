@@ -11,9 +11,29 @@ def get_users():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Users')
-        rows = cursor.fetchall()
-        users = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
+        
+        username = request.args.get('username')
+        
+        if username:
+            cursor.execute('SELECT * FROM Users WHERE username = ?', (username,))
+            row = cursor.fetchone()
+            if row:
+                users = [{
+                    'username': row[0],
+                    'firstName': row[1],
+                    'lastName': row[2],
+                    'dateOfBirth': row[3],
+                    'dateJoined': row[4],
+                    'userType': row[5],
+                    'businessCount': row[6],
+                    'reviewCount': row[7]
+                }]
+            else:
+                return jsonify({'error': 'User not found'}), 404
+        else:       
+            cursor.execute('SELECT * FROM Users')
+            rows = cursor.fetchall()
+            users = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
         return jsonify(users)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

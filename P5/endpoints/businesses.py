@@ -9,9 +9,33 @@ def get_businesses():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Business')
-        rows = cursor.fetchall()
-        businesses = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
+        
+        business_id = request.args.get('businessID')
+        
+        if business_id:
+            cursor.execute('SELECT * FROM Business WHERE businessID = ?', (business_id,))
+            row = cursor.fetchone()
+            if row:
+                businesses = [{
+                    'businessID': row[0],
+                    'name': row[1],
+                    'overallRating': row[2],
+                    'reviewCount': row[3],
+                    'street': row[4],
+                    'city': row[5],
+                    'state': row[6],
+                    'zipCode': row[7],
+                    'businessType': row[8],
+                    'cuisineType': row[9],
+                    'entertainmentType': row[10],
+                    'serviceType': row[11]
+                }]
+            else:
+                return jsonify({'error': 'Business not found'}), 404
+        else:
+            cursor.execute('SELECT * FROM Business')
+            rows = cursor.fetchall()
+            businesses = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
         return jsonify(businesses)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
