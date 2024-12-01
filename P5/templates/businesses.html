@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Businesses{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Businesses</h1>
+    <div class="business-controls">
+        <button onclick="showAddBusinessForm()" class="btn">Add Business</button>
+    </div>
+    <div id="businessList" class="business-list">
+        <!-- Businesses will be loaded here dynamically -->
+    </div>
+</div>
+
+<div id="addBusinessModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2>Add New Business</h2>
+        <form id="addBusinessForm" onsubmit="handleAddBusiness(event)">
+            <div class="form-group">
+                <label for="name">Business Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="businessType">Business Type:</label>
+                <select id="businessType" name="businessType" required>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Service">Service</option>
+                </select>
+            </div>
+            <!-- Add other form fields as needed -->
+            <button type="submit" class="btn">Add Business</button>
+            <button type="button" class="btn" onclick="hideAddBusinessForm()">Cancel</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

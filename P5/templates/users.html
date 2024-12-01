@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Users</h1>
+    <div class="user-controls">
+        <button onclick="showAddUserForm()" class="btn">Add User</button>
+    </div>
+    <div id="userList" class="user-list"></div>
+</div>
+
+<div id="addUserModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2>Add New User</h2>
+        <form id="addUserForm" onsubmit="handleAddUser(event)">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+            </div>
+            <div class="form-group">
+                <label for="userType">User Type:</label>
+                <select id="userType" name="userType" required>
+                    <option value="Both">Both</option>
+                    <option value="Owner">Owner</option>
+                    <option value="Reviewer">Reviewer</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Add User</button>
+            <button type="button" class="btn" onclick="hideAddUserForm()">Cancel</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const loadUsers = async () => {
+        const users = await fetchData('users');
+        const userList = document.getElementById('userList');
+        userList.innerHTML = users.map(user => `
+            <div class="user-item">
+                <h3>${user.firstName} ${user.lastName}</h3>
+                <p>Username: ${user.username}</p>
+                <p>Type: ${user.userType}</p>
+                <button onclick="editUser('${user.username}')" class="btn btn-warning">Edit</button>
+                <button onclick="deleteUser('${user.username}')" class="btn btn-danger">Delete</button>
+            </div>
+        `).join('');
+    };
+
+    document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = {
+            username: document.getElementById('username').value,
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            dateOfBirth: document.getElementById('dateOfBirth').value,
+            dateJoined: new Date().toISOString().split('T')[0],
+            userType: document.getElementById('userType').value,
+            businessCount: 0,
+            reviewCount: 0
+        };
+        await postData('users', formData);
+        loadUsers();
+    });
+
+    loadUsers();
+});
+</script>
+{% endblock %}

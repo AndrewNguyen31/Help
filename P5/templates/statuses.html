@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Statuses{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>User Statuses</h1>
+    <div class="status-controls">
+        <button onclick="showAddStatusForm()" class="btn">Add Status</button>
+    </div>
+    <div id="statusList" class="status-list"></div>
+</div>
+
+<div id="addStatusModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2>Add New Status</h2>
+        <form id="addStatusForm" onsubmit="handleAddStatus(event)">
+            <div class="form-group">
+                <label for="statusID">Status ID:</label>
+                <input type="number" id="statusID" name="statusID" required>
+            </div>
+            <div class="form-group">
+                <label for="statusName">Status Name:</label>
+                <select id="statusName" name="statusName" required>
+                    <option value="Iron">Iron</option>
+                    <option value="Bronze">Bronze</option>
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Platinum">Platinum</option>
+                    <option value="Diamond">Diamond</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <button type="submit" class="btn">Add Status</button>
+            <button type="button" class="btn" onclick="hideAddStatusForm()">Cancel</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const loadStatuses = async () => {
+        const statuses = await fetchData('statuses');
+        const statusList = document.getElementById('statusList');
+        statusList.innerHTML = statuses.map(status => `
+            <div class="status-item">
+                <h3>${status.statusName}</h3>
+                <p>${status.description}</p>
+                <button onclick="editStatus(${status.statusID})" class="btn btn-warning">Edit</button>
+                <button onclick="deleteStatus(${status.statusID})" class="btn btn-danger">Delete</button>
+            </div>
+        `).join('');
+    };
+
+    loadStatuses();
+});
+</script>
+{% endblock %}

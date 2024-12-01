@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Welcome to Hyelp</h1>
+    <div class="dashboard">
+        <div class="card">
+            <h2>Businesses</h2>
+            <p>View and manage business listings</p>
+            <a href="/businesses" class="btn">View Businesses</a>
+        </div>
+        <div class="card">
+            <h2>Reviews</h2>
+            <p>Browse and manage reviews</p>
+            <a href="/reviews" class="btn">View Reviews</a>
+        </div>
+        <div class="card">
+            <h2>Users</h2>
+            <p>Manage user accounts</p>
+            <a href="/users" class="btn">View Users</a>
+        </div>
+        <div class="card">
+            <h2>Comments</h2>
+            <p>Manage review comments</p>
+            <a href="/comments" class="btn">View Comments</a>
+        </div>
+        <div class="card">
+            <h2>Statuses</h2>
+            <p>Manage user statuses</p>
+            <a href="/statuses" class="btn">View Statuses</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
